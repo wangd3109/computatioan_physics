@@ -12,15 +12,24 @@ program main
 !
       do i = 1,100,1
       b=b0+db*i
-      if ( e < v) then
-              print *, b, theta_1(b,rmax)
-      else
-              print *, b, theta_2(b,rmax,V,E)
-      end if
+      call analytical(b,rmax,v,e)
       end do
+      
 
 end program main
 
+subroutine analytical(b, rmax, V, E)
+        implicit none
+        real :: b, rmax, V, E 
+        real :: theta_1, theta_2
+
+        if ( e < v) then
+                print *, "sub",b, theta_1(b,rmax)
+        else
+                print *, "sub",b, theta_2(b,rmax,V,E)
+        end if
+end subroutine analytical
+ 
 function theta_1(b,rmax)
         implicit none
         real :: b, rmax, pi
