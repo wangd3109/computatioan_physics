@@ -1,6 +1,6 @@
 program main
       implicit none
-      real :: b0, db, b, rmax, pi, V, E, r, term1
+      real :: b0, db, b, rmax, rmin, pi, V, E, r
       real :: theta_1, theta_2, g
       real :: inte
       integer :: i
@@ -12,31 +12,19 @@ program main
       E = 10
       pi = 4*atan(1.0)
 
+      b = b0
+      rmin = sqrt((e*b**2)/(e-v))
+      print *,rmin
+
 !
-      b=b0
-      do i = 1,100,1
-      b=b0+db*i
+!      b=b0
+!      do i = 1,100,1
+!      b=b0+db*i
  
-      ! for the first term
-!      call integration(b,rmax,g(x,b))
-!      term1 = inte
-!      print *, term1
-
-      ! for the second term
-!      g(x) = (1/r**2)*sqrt(1-(b/r)**2-V/E)
-!      call integration(rmin,rmax,g(x))
-!      term2 = inte
-
-!      theta = 2*b(term1-term2)    
-
       call analytical(b,rmax,v,e)
-      call g_rmin(b,v,e,rmax)
+!      end do
+!      call integration(b,rmax)
 
-!      print*, '0',b, rmax, rmin
-      end do
-      call integration(b,rmax)
-
-!      print*, "b:",b,"rmax:",rmax
 
 
 
@@ -65,39 +53,6 @@ subroutine integration(x1,x2)
         print *, "term1:",inte
 end subroutine
 
-!function g(x)
-!        implicit none
-!        real :: x,b
-!        real :: g
-!            
-!        g = (1/x**2)*sqrt(1-(b/x)**2)
-!end function
-
-!!! to get the rmin
-subroutine g_rmin(b,v,e,rmax)
-        implicit none
-        real :: b,v,e,rmax,rmin
-        real :: tolerance, r0, r1, r2, diff
-        real :: f
-        integer :: iter
-!
-        r0 = rmax
-        r1 = r0 - 0.1
-        iter = 0
-        tolerance = 1.e-06
-      
-        10 continue
-        iter = iter+1
-        r2=r1-f(r1,b,v,e)*(r1-r0)/(f(r1,b,v,e)-f(r0,b,v,e))
-!        print *, "iteration:", iter, "r0:", r0, "r1:", r1, f(r0,b,v,e), f(r1,b,v,e)
-        diff = r2-r1
-        r0 = r1
-        r1 = r2
-        if ( abs(diff) .gt. tolerance ) goto 10
-
-        print *,"rmin:",r1,sqrt((e*b**2)/(e-v))
-end subroutine g_rmin
-
 function f(x,b,v,e)
         implicit none
         real :: b, v, e
@@ -116,9 +71,9 @@ subroutine analytical(b, rmax, V, E)
         real :: theta_1, theta_2
 
         if ( e < v) then
-                print *, "analytical, b:",b,"theta:", theta_1(b,rmax)
+                print *, "analytical solution:",b, theta_1(b,rmax)
         else
-                print *, "analytical, b:",b,"theta:", theta_2(b,rmax,V,E)
+                print *, "analytical solution:",b, theta_2(b,rmax,V,E)
         end if
 end subroutine analytical
  
