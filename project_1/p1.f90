@@ -34,7 +34,6 @@ program main
       term1 = 0
       r=b
 !      print *, b,rmax,steps
-
       do j = 1, steps
       term1=term1+(h/3)*(t1(r,b)+4*t1(r+h,b)+t1(r+2*h,b))
       r = r+2*h
@@ -47,7 +46,6 @@ program main
       term2 = 0
       r=rmin
 !      print *, rmin, rmax, steps
-
       do k = 1, steps
       print *, k, term2, t2(r,b,v,e)
       term2 = (h/3)*(t2(r,b,V,E)+4*t2(r+h,b,V,E)+t2(r+2*h,b,V,E))
