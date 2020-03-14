@@ -18,11 +18,11 @@ program main
       print *,rmin
 
 !
-!      do i = 0,100,1
-!      b=b0+db*i
+      do i = 0,100,1
+      b=b0+db*i
  
       call analytical(b,rmax,v,e)
-!      end do
+      end do
 !      call integration(b,rmax)
 !
       h = 0.001
@@ -39,7 +39,7 @@ program main
       r = r+2*h
       end do
 
-      print *, 'term1:',term1
+!      print *, 'term1:',term1
 
       !! for the secon term
       steps = (rmax-rmin)/(2*h)
@@ -47,15 +47,15 @@ program main
       r=rmin
 !      print *, rmin, rmax, steps
       do k = 1, steps
-      print *, k, term2, t2(r,b,v,e)
+!      print *, k, term2, t2(r,b,v,e)
       term2 = (h/3)*(t2(r,b,V,E)+4*t2(r+h,b,V,E)+t2(r+2*h,b,V,E))
 !      term2 = term2+(h/3)*(t2(r,b,V,E)+4*t2(r+h,b,V,E)+t2(r+2*h,b,V,E))
       r = r+2*h
       end do
-      print *, b,V,E,'term2:', term2
+!      print *, b,V,E,'term2:', term2
 
       theta = 2*b*(term1-term2)
-      print *, 'numerical  solution:', b, theta
+!      print *, 'numerical  solution:', b, theta
 
 !      end do
 
@@ -116,9 +116,11 @@ subroutine analytical(b, rmax, V, E)
         real :: theta_1, theta_2
 
         if ( e < v) then
-                print *, "analytical solution:",b, theta_1(b,rmax)
+                print *, "analytical solution1:",b, theta_1(b,rmax)
+!                print *, v, e, b, rmax
         else
-                print *, "analytical solution:",b, theta_2(b,rmax,V,E)
+                print *, "analytical solution2:",b, theta_2(b,rmax,V,E)
+                print *, v, e, b, rmax
         end if
 end subroutine analytical
  
