@@ -6,7 +6,7 @@ program main
       real :: term1, term2, h, t1, t2, theta
       integer :: i,j,k, steps
       
-      b0 = 1
+      b0 = 2
       db = 0.1
       rmax = 10
       V = 5
@@ -22,7 +22,7 @@ program main
       b=b0+db*i
 
 !! the analytical solution 
-!      call analytical(b,rmax,v,e,pi)
+      call analytical(b,rmax,v,e,pi)
 
 !! the numerical solution
       h = 0.0001
@@ -30,34 +30,35 @@ program main
       !! THE FIRST TERM
       steps = (rmax-b)/(2*h)
       term1 = 0
-      r=b
+      r=b+h
       print *, b,rmax,steps
       do j = 1, steps         ! do integration for the first term
-      print *, r, b
-      print *, 'mark',(1/r**2)*(1-(b/r)**2)**(1/2.),(1-(b/r)**2.)
-      print *, t1(r,b), t1(r+h,b), t1(r+2*h,b)
+      ! checking print
+!      print *, r, b
+!      print *, 'mark',(1/r**2)*(1-(b/r)**2)**(1/2.),(1-(b/r)**2.)
+!      print *, t1(r,b), t1(r+h,b), t1(r+2*h,b)
       term1=term1+(h/3)*(t1(r,b)+4*t1(r+h,b)+t1(r+2*h,b))
       r = r+2*h
       end do
 
- !     print *, "b",b,'rmax:',rmax,'term1:',term1
+      print *, "b",b,'rmax:',rmax,'term1:',term1
 
       !! THE SECOND TERM
 
 !      print *,  t2(2.,b,V,E)
-!      steps = (rmax-rmin)/(2*h)
-!      term2 = 0
-!      r=rmin
-!      do k = 1, steps
+      steps = (rmax-rmin)/(2*h)
+      term2 = 0
+      r=rmin+h
+      do k = 1, steps
 !      print *, 'r:',r,'b:',b,'v:',v,'e:',e
 !      print *, t2(r,b,v,e)
-!      term2 = term2+(h/3)*(t2(r,b,V,E)+4*t2(r+h,b,V,E)+t2(r+2*h,b,V,E))
-!      r = r+2*h
-!      end do
-!      print *, 'rmin:',rmin,'rmax:',rmax,'term2:', term2
+      term2 = term2+(h/3)*(t2(r,b,V,E)+4*t2(r+h,b,V,E)+t2(r+2*h,b,V,E))
+      r = r+2*h
+      end do
+      print *, 'rmin:',rmin,'rmax:',rmax,'term2:', term2
 
-!      theta = 2*b*(term1-term2)
-!      print *, 'numerical  solution:', b, theta
+      theta = 2*b*(term1-term2)
+      print *, 'numerical  solution:', b, theta
 
       end do
 
