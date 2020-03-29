@@ -3,18 +3,22 @@ program main
       real :: b0, db, b, rmax, rmin, pi, V, E, r
       real :: theta_1, theta_2, g
       ! for the integrations
+      real :: theta_a
       real :: term1, term2, h, t1, t2, theta
       integer :: i,j,k, steps
       
       b0 = 1
       db = 0.1
       rmax = 10
-      V = 5
-      E = 10
+      V = -10 
+      E =  5
       pi = 4*atan(1.0)
 
       b = b0
-!
+
+      open(10,file='output.dat')
+      write(10,*), "#   b      analytical      numerical"
+
       do i = 0,100,1
       b=b0+db*i
       theta = 0
@@ -22,9 +26,14 @@ program main
 !      print *,'rmin:',rmin
 
 
-
 !! the analytical solution 
-      call analytical(b,rmax,v,e,pi)
+!      call analytical(b,rmax,v,e,pi)
+        if ( e < v) then
+                theta_a = theta_1(b,rmax,pi)
+        else
+                theta_a = theta_2(b,rmax,V,E,pi)
+        end if
+   
 
 !! the numerical solution
       h = 0.0001
@@ -52,7 +61,8 @@ program main
 !      print *, b,'rmin:',rmin,'rmax:',rmax,'term2:', term2
 
       theta = 2*b*(term1-term2)
-      print *, 'numerical  solution:', b, theta
+      write(10,*), b, theta_a, theta
+      print *,b, theta_a,  theta
 
       end do
 
