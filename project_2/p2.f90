@@ -66,7 +66,7 @@ program main
 !      print *, b,'rmin:',rmin,'rmax:',rmax,'term2:', term2
 
       theta = 2*b*(term1-term2)
-      write(10,*), b, theta_a, theta
+      write(10,'(f5.1,4x,f10.6,4x,f10.6)'), b, theta_a, theta !theta*sqrt(E/(4*V0))*b/rmin
       print *,b, theta_a,  theta
 
       end do
