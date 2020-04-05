@@ -13,7 +13,7 @@ program main
 !	k=5
       t=0.05*k      ! temperature
       jex=1.      ! exchange parameter
-      jex2=-1.
+      jex2=-2.
       b=0.        ! electron field
       cont=0
       grid=16
