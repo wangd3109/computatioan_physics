@@ -5,9 +5,8 @@ program main
       integer ::i,j,s1,s2,cont,steps,grid,k
       character (len=100) :: filename,datafile
       real,external :: exchange,efield,r,p,exchange2
-	real,external :: hb
 
-      open(unit=1,file='data.dat') 
+	open(unit=1,file='data.dat') 
       write(1,*) "Temperature       Hamiltonian       Magnetization       4th_order_cumulant"
       do k=5,200,1
 !	call cpu_time(start)
@@ -15,24 +14,24 @@ program main
       t=0.05*k      ! temperature
       jex=1.      ! exchange parameter
       jex2=-1.
-      b=0.        ! electron field
+      b=1.        ! electron field
       cont=0
       grid=16
-      steps=1000*(grid**2)
-      m4=0
-      m2=0
+	steps=1000*(grid**2)
+	m4=0
+	m2=0
       e_old=e
       m_old=m
 
-
-      !初始化lattice
+	
+	!初始化lattice
       do i=1,grid
       do j=1,grid
       lattice(i,j)=1
       end do
       end do
-      
-      !对lattice进行格点数次的翻转
+	
+	!对lattice进行格点数次的翻转
       call random_seed()
       do i=1,grid**2
       call random_number(randomx)
@@ -42,18 +41,18 @@ program main
 
       lattice(int(randomx),int(randomy))=-1*lattice(int(randomx),int(randomy))
       end do                            ! now we have the lattice
-
-      !检查LATTICE是否正确
+	
+	!检查LATTICE是否正确
 !      print*,lattice
 
-      !subroutine,处理得到磁矩？h1（哈密顿量）？对初始化并翻转后的lattice计算此时的性质（磁性，哈密顿量）
+	!subroutine,处理得到磁矩？h1（哈密顿量）？对初始化并翻转后的lattice计算此时的性质（磁性，哈密顿量）
       call hamil(grid,jex,b,lattice,mag,h1)
       summationh=h1
 !      mag=abs(mag)
       summationm=mag
       cont=1
-      h1=h1/(grid**2)
-      mag=mag/(grid**2)
+	h1=h1/(grid**2)
+	mag=mag/(grid**2)
 !      write(k,*) "steps:",cont,"Hamiltonian:",h1,"Magnetization:",mag
       
 	!随机翻转一个格点上的磁矩，并计算磁化强度，哈密顿量，循环指定步数
@@ -75,7 +74,7 @@ program main
               h1=h2
       else 
               call random_number(tmp)
-              if (tmp .lt. hb(jex,su,sd,sl,sr,t)) then
+              if (tmp .lt. r(h1,h2,t)) then
               !        cont=cont+1
 !                      summationh=summationh+h2
 !                      summationm=summationm+mag
@@ -148,13 +147,6 @@ real function r(h1,h2,t)
         implicit none
         real(8) :: h1,h2,t
         r=exp((h1-h2)/t)
-end function
-
-real function hb(jex,su,sd,sl,sr,t)
-        implicit none
-        integer :: su,sd,sl,sr
-        real :: jex,t
-        hb=exp(2*jex*(su+sd+sl+sr)/t)/(1+exp(2*jex*(su+sd+sl+sr)/t))
 end function
 
 real function p(h2,t)
