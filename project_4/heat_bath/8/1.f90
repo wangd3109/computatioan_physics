@@ -1,6 +1,6 @@
 program main
       implicit none
-      real(8) :: lattice(4,4),jex,b,randomx,randomy,h1,h2,tmp,t,summationh,summationm,averageh,averagem,mag,start,finish,m2,m4,u
+      real(8) :: lattice(8,8),jex,b,randomx,randomy,h1,h2,tmp,t,summationh,summationm,averageh,averagem,mag,start,finish,m2,m4,u
 	real(8) :: m2_avg,m4_avg,e,m,e_old,m_old,jex2
       integer ::i,j,s1,s2,cont,steps,grid,k
       character (len=100) :: filename,datafile
@@ -25,7 +25,7 @@ program main
       jex2=-1.
       b=0.        ! electron field
       cont=0
-      grid=4
+      grid=8
       steps=1000*(grid**2)
       m4=0
       m2=0
@@ -194,7 +194,7 @@ end function
 
 subroutine hamil(grid,jex,b,lattice,mag,h,su,sd,sl,sr)
         implicit none
-        real(8) :: lattice(4,4),h,jex,b,summation1,mag        !这里x没有问题？
+        real(8) :: lattice(8,8),h,jex,b,summation1,mag        !这里x没有问题？
         real(8) :: summation2,jex2
         integer :: i,j,s0,su,sd,sl,sr,grid
         integer :: sul,sur,sdl,sdr                            !second nearest neighbour
