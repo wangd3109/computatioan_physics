@@ -9,6 +9,8 @@ program main
       integer :: su,sd,sl,sr
       real,external :: hb
 
+      character (len=3) :: nf
+
 
 !******************************************************************************
 ! initialization
@@ -17,10 +19,10 @@ program main
       open(unit=1,file='data.dat') 
       write(1,*) "Temperature       Hamiltonian       Magnetization       4th_order_cumulant"
 
-      do k=5,200,1
-!	call cpu_time(start)
+      do k=5,500,5
+      call cpu_time(start)
 !      k=5
-      t=0.05*k      ! temperature
+      t=0.01*k      ! temperature
       jex=1.      ! exchange parameter
       jex2=-1.
       b=0.        ! electron field
@@ -32,7 +34,9 @@ program main
       e_old=e
       m_old=m
 
-
+! write the matrix
+      write(nf,'(i3)')k
+      open(unit=k,file='t'//trim(AdjustL(nf))//'.dat') 
 !初始化lattice
       do i=1,grid
       do j=1,grid
@@ -140,9 +144,13 @@ program main
       m=m/(steps/2)
       write(1,'(f10.6,4x,f10.6,4x,f10.6,4x,f10.6,4x,f10.6,4x,f10.6)') t,e,m,u,e-e_old,m-m_old
 !	write(1,*) "Temperature:",t,"Hamiltonian:",e,"Magnetization:",m,"4th_order_cumulant:",u
-
+      write(k,"(4f4.0)")(lattice(i,:),i=1,grid)
+      close(unit=k)
       end do
       close(unit=1)
+      call cpu_time(finish)
+      print*,"cpu time:", finish-start
+!      close(unit=k)
 
 end program main
 
@@ -205,7 +213,7 @@ subroutine hamil(grid,jex,b,lattice,mag,h,su,sd,sl,sr)
         h=0
        
 
-	!计算第一项，交换关联
+!计算第一项，交换关联
         do i=1,grid                                           !lattice
         do j=1,grid
         s0=lattice(i,j)
@@ -303,7 +311,7 @@ subroutine hamil(grid,jex,b,lattice,mag,h,su,sd,sl,sr)
         end do
         end do
 
-	!计算第二项，磁场对能量的贡献，对spin求和
+!计算第二项，磁场对能量的贡献，对spin求和
         do i=1,grid
         do j=1,grid
         s0=lattice(i,j)
