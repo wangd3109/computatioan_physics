@@ -171,11 +171,11 @@ real function exchange2(s0,sul,sur,sdl,sdr)
 end function
 
 !需要这个吗？？
-real function efield(a)
-        implicit none
-        integer :: a
-        efield=a
-end function
+!real function efield(a)
+!        implicit none
+!        integer :: a
+!        efield=a
+!end function
 
 !for the metropolis algorithm
 real function r(h1,h2,t)
