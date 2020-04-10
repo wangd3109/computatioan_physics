@@ -1,6 +1,6 @@
 program main
       implicit none
-      real(8) :: lattice(32,32),jex,b,randomx,randomy,h1,h2,tmp,t,summationh,summationm,averageh,averagem,mag,start,finish,m2,m4,u
+      real(8) :: lattice(8,8),jex,b,randomx,randomy,h1,h2,tmp,t,summationh,summationm,averageh,averagem,mag,start,finish,m2,m4,u
 	real(8) :: m2_avg,m4_avg,e,m,e_old,m_old,jex2
       integer ::i,j,s1,s2,cont,steps,grid,k
       character (len=100) :: filename,datafile
@@ -17,18 +17,19 @@ program main
 !
 !******************************************************************************
       open(unit=1,file='data.dat') 
-      write(1,*) "Temperature       Hamiltonian       Magnetization       4th_order_cumulant"
+      write(1,*) "Temperature       Hamiltonian       Magnetization       4th_order_cumulant    Cv     Sus.     cpu_tim"
 
       do k=5,500,5
       call cpu_time(start)
 !      k=5
       t=0.01*k      ! temperature
+      print '(F8.2)',  t
       jex=-1.      ! exchange parameter
 !      jex2=-1.
       b=0.        ! electron field
       cont=0
-      grid=32
-      steps=1000*(grid**2)
+      grid=8
+      steps=2000*(grid**2)
       m4=0
       m2=0
       e_old=e
@@ -142,14 +143,13 @@ program main
       u=1-(m4_avg)/(3*((m2_avg)**2))
       e=e/(steps/2)
       m=m/(steps/2)
-      write(1,'(f10.6,4x,f10.6,4x,f10.6,4x,f10.6,4x,f10.6,4x,f10.6)') t,e,m,u,e-e_old,m-m_old
+      call cpu_time(finish)
+      write(1,'(f10.6,4x,f10.6,4x,f10.6,4x,f10.6,4x,f10.6,4x,f10.6,4x,f10.2)') t,e,abs(m),u,e-e_old,abs(m)-abs(m_old),finish-start
 !	write(1,*) "Temperature:",t,"Hamiltonian:",e,"Magnetization:",m,"4th_order_cumulant:",u
-      write(k,"(32f4.0)")(lattice(i,:),i=1,grid)
+      write(k,"(8f4.0)")(lattice(i,:),i=1,grid)
       close(unit=k)
       end do
       close(unit=1)
-      call cpu_time(finish)
-      print*,"cpu time:", finish-start
 
 end program main
 
@@ -201,7 +201,7 @@ end function
 
 subroutine hamil(grid,jex,b,lattice,mag,h,su,sd,sl,sr)
         implicit none
-        real(8) :: lattice(32,32),h,jex,b,summation1,mag        !这里x没有问题？
+        real(8) :: lattice(8,8),h,jex,b,summation1,mag        !这里x没有问题？
         real(8) :: summation2,jex2
         integer :: i,j,s0,su,sd,sl,sr,grid
         integer :: sul,sur,sdl,sdr                            !second nearest neighbour
