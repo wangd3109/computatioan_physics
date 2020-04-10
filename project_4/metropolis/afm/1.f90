@@ -314,7 +314,8 @@ subroutine hamil(grid,jex,b,lattice,mag,h,su,sd,sl,sr)
         do i=1,grid
         do j=1,grid
         s0=lattice(i,j)
-        mag=mag+efield(s0)
+        mag=mag+lattice(i,j)
+!        mag=mag+efield(s0)
         end do
         end do
 
